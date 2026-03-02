@@ -1,0 +1,603 @@
+{UTF-8}
+Larval control effectiveness=0.33
+	~	Dmnl
+	~		|
+
+Fraction of GDP for prevention=0.005
+	~	Dmnl [0,0.3]
+	~		|
+
+bed net coverage=MIN (prevention funding,Net allocation share)/Cost for full coverage
+	~	Dmnl
+	~		|
+
+Bed net efficiency=0.7
+	~	Dmnl [0,1]
+	~		|
+
+prevention funding=GDP per Capita*Fraction of GDP for prevention
+	~	USD/person
+	~		|
+
+Transmission Probability=0.1 * (1-(vaccine coverage*Vaccine efficiency))
+	~	Dmnl [0,1]
+	~	Probability of transmission from mosquito to human per bite [0.1,0.5]
+	|
+
+Biting rate=10.1 * 1-(bed net coverage*Bed net efficiency)
+	~	1/Month [0,30]
+	~	Effective contact rate per mosquito per month [10,30]
+	|
+
+Cost for full coverage=10
+	~	USD/person [2,30]
+	~		|
+
+Vaccine efficiency=0.8
+	~	Dmnl
+	~		|
+
+Net allocation share=0.5
+	~	Dmnl [0,1]
+	~		|
+
+Policy larval control active=0
+	~	Dmnl
+	~		|
+
+vaccine coverage=MIN ( prevention funding,Net allocation share) / Cost for full coverage
+	~	Dmnl
+	~		|
+
+Mosquito Reproduction Rate=1.5 * (1-(Larval control effectiveness*Policy larval control active\
+		))
+	~	1/Month [0,5]
+	~	Maximum mosquito reproduction rate [3,10]
+	|
+
+GDP per Capita= INTEG (Economic Growth - Economic Decay,
+		 800)
+	~	USD/person
+	~	Gross Domestic Product per capita [500,5000]
+	|
+
+GDP ref=GDP per Capita/GDP scale
+	~	Dmnl
+	~		|
+
+GDP scale=1
+	~	USD/person
+	~		|
+
+Births=Total human population * Birth rate * (1 - (Total human population/Human Carrying Capacity\
+		))
+	~	person/Month
+	~	Number of new births
+	|
+
+"Maximum Sustainable GDP (GDPmax)"=4500
+	~	USD/person
+	~		|
+
+Cost per case=100
+	~	USD/(person*Month)
+	~	Economic cost per malaria case per month [50,500]
+	|
+
+Drag time constant=164
+	~	Month
+	~		|
+
+Economic Loss from Malaria=(Infected Symptomatic * Cost per case) / Total human population
+	~	USD/(Month*person)
+	~		|
+
+Economic Decay=Economic Loss from Malaria + "Non-Malaria Economic Loss"
+	~	(USD/person)/Month
+	~	Economic loss from malaria per capita
+	|
+
+Growth rate=0.015 * EXP(-GDP ref/ 5000)
+	~	1/Month
+	~	Economic growth rate per capita [0.002,0.01]
+	|
+
+Healthcare Quality Index=0.05 + 0.75 / (1 + EXP(-0.00375 * (GDP ref - 1440)))
+	~	Dmnl
+	~	Healthcare quality index (0-1) based on GDP index
+	|
+
+Human Carrying Capacity=2 * 10^7
+	~	person
+	~		|
+
+"Non-Malaria Economic Loss"=(GDP per Capita/Drag time constant)* (GDP per Capita / "Maximum Sustainable GDP (GDPmax)"\
+		)^4
+	~	USD/(Month*person)
+	~		|
+
+Malaria deaths per 1000=Malaria deaths/Total human population * 1000
+	~	1/Month
+	~		|
+
+infection rate per 1000=Infection Rate/Total human population*1000
+	~	1/Month
+	~		|
+
+Infection Rate=Transmission Probability * Biting rate * (Infectious Mosquitoes / Total mosquito population\
+		) * Susceptible Humans
+	~	person/Month
+	~	New human infections per month
+	|
+
+Base Duration of Infection=0.5
+	~	Month
+	~	Average duration of malaria infection without treatment [0.5,2]
+	|
+
+Base Malaria Mortality=0.05
+	~	1/Month
+	~	Malaria mortality rate per infected person [0.01,0.20]
+	|
+
+Birth rate=0.005
+	~	1/Month
+	~	Human birth rate per capita [0.003,0.015]
+	|
+
+Human deaths=Susceptible Humans * Natural mortality rate
+	~	person/Month
+	~	Non-malaria deaths from susceptible population
+	|
+
+Duration of Immunity=6
+	~	Month [6,10]
+	~	Average duration of immunity after recovery [6,24]
+	|
+
+Economic Growth=GDP per Capita * Growth rate
+	~	(USD/person)/Month
+	~	Increase in GDP per capita
+	|
+
+Exposed Mosquitoes= INTEG (Mosquito Infection Rate-Latent Progression-Mosquito deaths II\
+		,
+		100000)
+	~	Mosquito
+	~	Mosquitoes infected but not yet infectious [1000,1e6]
+	|
+
+Infected Symptomatic= INTEG (Infection Rate - Malaria deaths- Recovery Rate - Human deaths II\
+		,
+		2.5e+06)
+	~	person
+	~	Symptomatically infected humans [1000,1e6]
+	|
+
+Infectious Mosquitoes= INTEG (Latent Progression-Mosquito deaths III,
+		8e+06)
+	~	Mosquito
+	~	Infectious mosquitoes capable of transmission [1000,1e6]
+	|
+
+Latent Progression=Exposed Mosquitoes / Mosquito Incubation Period
+	~	Mosquito/Month
+	~	Progression from exposed to infectious state
+	|
+
+Malaria deaths=Infected Symptomatic * Base Malaria Mortality * (1 - Healthcare Quality Index\
+		)
+	~	person/Month
+	~	Malaria-induced deaths per month
+	|
+
+Mosquito Births=Total mosquito population * Mosquito Reproduction Rate * (1-Total mosquito population\
+		/Mosquito Carrying Capacity)
+	~	Mosquito/Month
+	~	New mosquito births with density dependence
+	|
+
+Mosquito Carrying Capacity=1e+08
+	~	Mosquito
+	~	Maximum sustainable mosquito population [1e6,1e8]
+	|
+
+Mosquito deaths=Susceptible Mosquitoes / Mosquito life expectancy
+	~	Mosquito/Month
+	~	Deaths of susceptible mosquitoes
+	|
+
+Mosquito deaths II=Exposed Mosquitoes / Mosquito life expectancy
+	~	Mosquito/Month
+	~	Deaths of exposed mosquitoes
+	|
+
+Mosquito deaths III=Infectious Mosquitoes / Mosquito life expectancy
+	~	Mosquito/Month
+	~	Deaths of infectious mosquitoes
+	|
+
+Mosquito Incubation Period=0.4
+	~	Month
+	~	Time from infection to infectiousness in mosquitoes [0.2,0.6]
+	|
+
+Mosquito Infection Rate=Trans Prob Human to Mosquito * Biting rate * (Infected Symptomatic\
+		/ Total human population) * Susceptible Mosquitoes
+	~	Mosquito/Month
+	~	New mosquito infections per month
+	|
+
+Mosquito life expectancy=1.5
+	~	Month [0,3]
+	~	Average mosquito lifespan [0.33,1]
+	|
+
+Human deaths II=Infected Symptomatic * Natural mortality rate
+	~	person/Month
+	~	Non-malaria deaths from infected population
+	|
+
+Human deaths III=Recovered Humans * Natural mortality rate
+	~	person/Month
+	~	Non-malaria deaths from recovered population
+	|
+
+Natural mortality rate=0.00069
+	~	1/Month
+	~	Natural human mortality rate [0.0005,0.001]
+	|
+
+Recovered Humans= INTEG (Recovery Rate-Human deaths III-Waning Immunity,
+		0)
+	~	person
+	~	Humans with temporary immunity [0,1e7]
+	|
+
+Recovery Rate=Infected Symptomatic * (1 + Healthcare Quality Index) / Base Duration of Infection
+	~	person/Month
+	~	Recovery from infection to immune state
+	|
+
+Susceptible Humans= INTEG (Births + Waning Immunity - Infection Rate - Human deaths,
+		1.8e+07)
+	~	person
+	~	Humans susceptible to infection [1e6,1e8]
+	|
+
+Susceptible Mosquitoes= INTEG (Mosquito Births-Mosquito deaths-Mosquito Infection Rate\
+		,
+		3e+07)
+	~	Mosquito
+	~	Mosquitoes susceptible to infection [1e6,1e8]
+	|
+
+Total human population=Infected Symptomatic + Recovered Humans + Susceptible Humans
+	~	person
+	~	Total human population
+	|
+
+Total mosquito population=Susceptible Mosquitoes + Infectious Mosquitoes + Exposed Mosquitoes
+	~	Mosquito
+	~	Total mosquito population
+	|
+
+Trans Prob Human to Mosquito=0.3
+	~	Dmnl
+	~	Probability of transmission from human to mosquito per bite [0.1,0.5]
+	|
+
+Waning Immunity=Recovered Humans / Duration of Immunity
+	~	person/Month
+	~	Loss of immunity over time
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 2000
+	~	Month
+	~	The final time for the simulation (10 years).
+	|
+
+INITIAL TIME  = 0
+	~	Month
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Month [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.25
+	~	Month [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$-1--1--1,0,|12||-1--1--1|-1--1--1|-1--1--1|-1--1--1|-1--1--1|96,96,54,2
+10,1,Susceptible Humans,1477,-83,54,26,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,2,Infected Symptomatic,1630,54,57,26,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,3,Recovered Humans,1775,-84,52,26,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,4,6,1,100,0,0,22,0,192,0,-1--1--1,,1|(1470,-7)|
+1,5,6,2,4,0,0,22,0,192,0,-1--1--1,,1|(1525,50)|
+11,6,0,1470,50,8,6,33,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,7,Infection Rate,1470,82,46,26,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,8,10,2,100,0,0,22,0,192,0,-1--1--1,,1|(1731,52)|
+1,9,10,3,4,0,0,22,0,192,0,-1--1--1,,1|(1783,-6)|
+11,10,0,1783,52,8,6,33,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,11,Recovery Rate,1783,84,46,26,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,12,14,3,100,0,0,22,0,192,0,-1--1--1,,1|(1678,-81)|
+1,13,14,1,4,0,0,22,0,192,0,-1--1--1,,1|(1576,-81)|
+11,14,0,1627,-81,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,15,Waning Immunity,1627,-47,48,26,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,16,48,1314,-87,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,17,19,16,100,0,0,22,0,192,0,-1--1--1,,1|(1345,-87)|
+1,18,19,1,4,0,0,22,0,192,0,-1--1--1,,1|(1401,-87)|
+11,19,0,1373,-87,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,20,Births,1373,-53,46,26,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,21,48,1680,196,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,22,24,2,100,0,0,22,0,192,0,-1--1--1,,1|(1680,108)|
+1,23,24,21,4,0,0,22,0,192,0,-1--1--1,,1|(1680,168)|
+11,24,0,1680,142,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,25,Malaria deaths,1734,142,46,26,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,26,48,1470,-210,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,27,29,1,100,0,0,22,0,192,0,-1--1--1,,1|(1470,-144)|
+1,28,29,26,4,0,0,22,0,192,0,-1--1--1,,1|(1470,-197)|
+11,29,0,1470,-185,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,30,Human deaths,1524,-185,46,26,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,31,48,2000,-83,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,32,34,3,100,0,0,22,0,192,0,-1--1--1,,1|(1872,-83)|
+1,33,34,31,4,0,0,22,0,192,0,-1--1--1,,1|(1959,-83)|
+11,34,0,1923,-83,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,35,Human deaths III,1923,-49,46,26,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,36,48,1581,294,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,37,39,2,100,0,0,22,0,192,0,-1--1--1,,1|(1581,150)|
+1,38,39,36,4,0,0,22,0,192,0,-1--1--1,,1|(1581,259)|
+11,39,0,1581,226,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,40,Human deaths II,1636,226,47,26,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,41,Total human population,1134,47,63,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,42,1,41,1,0,0,0,0,192,0,-1--1--1,,1|(1332,14)|
+1,43,3,41,1,0,0,0,0,192,0,-1--1--1,,1|(1455,-232)|
+1,44,2,41,1,0,0,0,0,192,0,-1--1--1,,1|(1356,66)|
+10,45,Healthcare Quality Index,1901,185,64,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,46,45,11,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,47,45,25,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,48,Base Malaria Mortality,1786,231,59,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,49,Birth rate,1374,-188,46,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,50,41,20,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,51,49,19,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,52,Natural mortality rate,1989,-175,57,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,53,1,30,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,54,52,30,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,55,3,35,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,56,52,34,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,57,52,40,1,0,0,0,0,192,0,-1--1--1,,1|(1994,174)|
+1,58,2,40,1,0,0,0,0,192,0,-1--1--1,,1|(1652,133)|
+10,59,Biting rate,1259,201,46,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,60,Transmission Probability,1344,268,64,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,61,Base Duration of Infection,1928,22,46,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,62,Duration of Immunity,1627,-147,57,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,63,59,7,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,64,60,7,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,65,1,6,1,0,0,0,0,192,0,-1--1--1,,1|(1446,3)|
+1,66,61,11,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,67,2,11,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,68,3,15,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,69,62,14,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,70,2,25,1,0,0,0,0,192,0,-1--1--1,,1|(1716,92)|
+1,71,48,25,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,72,Susceptible Mosquitoes,1250,465,66,26,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,73,Exposed Mosquitoes,1504,466,62,26,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,74,Infectious Mosquitoes,1769,467,58,26,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,75,48,1026,464,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,76,78,75,100,0,0,22,0,192,0,-1--1--1,,1|(1070,464)|
+1,77,78,72,4,0,0,22,0,192,0,-1--1--1,,1|(1150,464)|
+11,78,0,1110,464,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,79,Mosquito Births,1110,498,46,26,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,80,82,72,100,0,0,22,0,192,0,-1--1--1,,1|(1344,465)|
+1,81,82,73,4,0,0,22,0,192,0,-1--1--1,,1|(1413,465)|
+11,82,0,1379,465,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,83,Mosquito Infection Rate,1379,499,62,26,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,84,86,73,100,0,0,22,0,192,0,-1--1--1,,1|(1645,466)|
+1,85,86,74,4,0,0,22,0,192,0,-1--1--1,,1|(1645,467)|
+11,86,0,1645,493,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,87,Latent Progression,1645,527,50,26,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,88,48,1211,572,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,89,91,72,100,0,0,22,0,192,0,-1--1--1,,1|(1211,519)|
+1,90,91,88,4,0,0,22,0,192,0,-1--1--1,,1|(1211,562)|
+11,91,0,1211,554,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,92,Mosquito deaths,1265,554,46,26,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,93,48,1515,575,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,94,96,73,100,0,0,22,0,192,0,-1--1--1,,1|(1515,518)|
+1,95,96,93,4,0,0,22,0,192,0,-1--1--1,,1|(1515,563)|
+11,96,0,1515,552,6,8,34,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,97,Mosquito deaths II,1571,552,50,26,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,98,48,2017,466,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,99,101,74,100,0,0,22,0,192,0,-1--1--1,,1|(1872,466)|
+1,100,101,98,4,0,0,22,0,192,0,-1--1--1,,1|(1968,466)|
+11,101,0,1923,466,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,102,Mosquito deaths III,1923,500,51,26,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,103,Mosquito life expectancy,1778,673,64,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,104,Mosquito Incubation Period,1496,369,55,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,105,Mosquito Carrying Capacity,950,345,49,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,106,Mosquito Reproduction Rate,1103,312,62,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,107,Trans Prob Human to Mosquito,1418,580,57,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,108,Total mosquito population,1498,644,46,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,109,73,108,1,0,0,0,0,192,0,-1--1--1,,1|(1468,558)|
+1,110,74,108,1,0,0,0,0,192,0,-1--1--1,,1|(1637,586)|
+1,111,72,108,1,0,0,0,0,192,0,-1--1--1,,1|(1357,594)|
+1,112,108,78,1,0,0,0,0,192,0,-1--1--1,,1|(1228,637)|
+1,113,106,78,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,114,105,78,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,115,107,83,1,0,0,0,0,192,0,-1--1--1,,1|(1393,561)|
+1,116,59,82,1,0,0,0,0,192,0,-1--1--1,,1|(1303,346)|
+1,117,72,83,1,0,0,0,0,192,0,-1--1--1,,1|(1307,505)|
+1,118,2,82,1,0,0,0,0,192,0,-1--1--1,,1|(1433,252)|
+1,119,41,82,1,0,0,0,0,192,0,-1--1--1,,1|(1198,303)|
+1,120,104,86,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,121,73,87,1,0,0,0,0,192,0,-1--1--1,,1|(1572,517)|
+1,122,103,97,1,0,0,0,0,192,0,-1--1--1,,1|(1640,649)|
+1,123,103,102,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,124,103,92,1,0,0,0,0,192,0,-1--1--1,,1|(1440,732)|
+1,125,72,92,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,126,73,97,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,127,74,102,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,128,74,7,1,0,0,0,0,192,0,-1--1--1,,1|(1519,290)|
+10,129,GDP per Capita,1986,346,46,26,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,130,48,1798,341,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,131,133,130,100,0,0,22,0,192,0,-1--1--1,,1|(1838,341)|
+1,132,133,129,4,0,0,22,0,192,0,-1--1--1,,1|(1910,341)|
+11,133,0,1874,341,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,134,Economic Growth,1874,375,48,26,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,135,Growth rate,1734,306,46,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,136,129,134,1,0,0,0,0,192,0,-1--1--1,,1|(1950,392)|
+1,137,135,133,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+12,138,48,2159,345,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,139,141,129,100,0,0,22,0,192,0,-1--1--1,,1|(2059,345)|
+1,140,141,138,4,0,0,22,0,192,0,-1--1--1,,1|(2124,345)|
+11,141,0,2093,345,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,142,Economic Decay,2093,379,53,26,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,143,Cost per case,2241,364,46,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,144,143,171,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,145,2,171,1,0,0,0,0,192,0,-1--1--1,,1|(1689,322)|
+1,146,41,171,1,0,0,0,0,192,0,-1--1--1,,1|(1512,-419)|
+12,147,0,2622,-81,300,200,0,15,0,0,2,0,0,0,0,0,0,0,0,0
+GDP per Capita,Graph
+12,148,0,2622,405,300,200,0,15,0,0,2,0,0,0,0,0,0,0,0,0
+Malaria deaths,Graph
+1,149,108,7,1,0,0,0,0,192,0,-1--1--1,,1|(904,231)|
+12,150,0,2648,878,300,200,0,15,0,0,2,0,0,0,0,0,0,0,0,0
+Infectious Mosquitoes,Graph
+12,151,0,3242,-84,300,200,0,15,0,0,2,0,0,0,0,0,0,0,0,0
+Healthcare Quality Index,Graph
+1,152,129,174,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,153,Malaria deaths per 1000,880,-159,57,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,154,infection rate per 1000,776,131,65,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,155,25,153,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,156,41,153,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,157,7,154,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,158,41,154,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+12,159,0,3279,869,300,200,0,15,0,0,2,0,0,0,0,0,0,0,0,0
+infection rate per 1000,Graph
+12,160,0,3254,401,300,200,0,15,0,0,2,0,0,0,0,0,0,0,0,0
+Malaria deaths per 1000,Graph
+12,161,0,2649,-447,99,48,8,7,0,0,-1,0,0,0,0,0,0,0,0,0
+GDP now s-shape as no countries economy increases 4% per year long term
+12,162,0,3269,-422,96,64,8,7,0,0,-1,0,0,0,0,0,0,0,0,0
+Health care index now S-shaped as there is first a lot of improvement, but that slows down. 
+12,163,0,3674,373,100,60,8,7,0,0,-1,0,0,0,0,0,0,0,0,0
+Try running 120 months and 1200 months. see differentce. malaria deaths increase, as population increases, but per 1000 people, it stabalizes
+12,164,0,2661,1327,300,200,0,15,0,0,1,0,0,0,0,0,0,0,0,0
+Equil
+10,165,Human Carrying Capacity,1256,-82,66,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,166,165,20,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,167,"Maximum Sustainable GDP (GDPmax)",2005,653,58,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,168,"Non-Malaria Economic Loss",2138,517,59,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,169,167,168,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,170,168,142,1,0,0,0,0,192,0,-1--1--1,,1|(2104,447)|
+10,171,Economic Loss from Malaria,2238,482,53,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,172,171,142,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,173,129,168,1,0,0,0,0,192,0,-1--1--1,,1|(2024,448)|
+10,174,GDP ref,1865,268,46,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,175,174,135,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,176,174,45,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,177,GDP scale,1941,247,46,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,178,177,174,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,179,Drag time constant,2194,629,51,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,180,179,168,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,181,Vaccine efficiency,921,715,53,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,182,Bed net efficiency,654,169,52,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,183,prevention funding,656,469,46,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,184,vaccine coverage,817,602,63,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,185,bed net coverage,728,262,64,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,186,183,185,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,187,183,184,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,188,184,60,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,189,185,59,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,190,181,60,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,191,182,59,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,192,129,183,1,0,0,0,0,192,0,-1--1--1,,1|(1559,921)|
+10,193,Fraction of GDP for prevention,502,509,58,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,194,Cost for full coverage,366,536,46,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,195,Net allocation share,123,597,53,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,196,193,183,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,197,194,185,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,198,195,185,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,199,195,184,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,200,194,184,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,201,Larval control effectiveness,1486,1066,52,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,202,Policy larval control active,1752,1035,51,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,203,201,106,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,204,202,106,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+///---\\\
+:GRAPH Equil
+:TITLE Equil.
+:SCALE
+:VAR GDP per Capita
+:DATASET 
+:LINE-WIDTH 1
+:SCALE
+:VAR Susceptible Humans
+:DATASET 
+:LINE-WIDTH 1
+:SCALE
+:VAR Susceptible Mosquitoes
+:DATASET 
+:LINE-WIDTH 1
+:SCALE
+:VAR Infected Symptomatic
+:DATASET 
+:LINE-WIDTH 1
+:SCALE
+:VAR Infectious Mosquitoes
+:DATASET 
+:LINE-WIDTH 1
+:SCALE
+:VAR Recovered Humans
+:DATASET 
+:LINE-WIDTH 1
+:SCALE
+:VAR Exposed Mosquitoes
+:DATASET 
+:LINE-WIDTH 1
+:L<%^E!@
+1:BaseCase2.vdfx
+4:Time
+5:infection rate per 1000
+9:BaseCase2
+19:54,0
+24:0
+25:2000
+26:2000
+23:0
+15:0,0,0,0,0,0
+27:0,
+34:0,
+42:0
+72:0
+73:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Vensim Sans|12||0-0-0|0-0-0|-1--1--1|0-0-255|192-192-192|-1--1--1

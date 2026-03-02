@@ -1,0 +1,211 @@
+{UTF-8}
+Bed net coverage  = A FUNCTION OF( Prevention funding)
+	~	
+	~		|
+
+Bite protection from nets  = A FUNCTION OF( Bed net coverage)
+	~	
+	~		|
+
+Prevention funding  = A FUNCTION OF( GDP per Capita)
+	~	
+	~		|
+
+Effective immunity  = A FUNCTION OF( Vaccine coverage)
+	~	
+	~		|
+
+Effective human biting  = A FUNCTION OF( Bite protection from nets,Mosquito Population\
+		)
+	~	
+	~		|
+
+Vaccine coverage  = A FUNCTION OF( Prevention funding)
+	~	
+	~		|
+
+Human Infection Rate  = A FUNCTION OF( Effective human biting,Effective immunity,Infected Mosquitos\
+		)
+	~	
+	~		|
+
+Recoveries  = A FUNCTION OF( Health Care Quality,Infected Humans)
+	~	
+	~		|
+
+Infected Humans  = A FUNCTION OF( Human Infection Rate,Recoveries)
+	~	
+	~		|
+
+Economic Growth  = A FUNCTION OF( Fractional Growth,GDP per Capita)
+	~	
+	~		|
+
+Economic Loss From Malaria  = A FUNCTION OF( Infected Humans)
+	~	
+	~		|
+
+Fractional Growth  = A FUNCTION OF( Resource adequacy)
+	~	
+	~		|
+
+GDP per Capita  = A FUNCTION OF( Economic Growth,Economic Loss From Malaria)
+	~	
+	~		|
+
+GDP Sustainable Kcap  = A FUNCTION OF( )
+	~	
+	~		|
+
+Health Care Quality  = A FUNCTION OF( GDP per Capita)
+	~	
+	~		|
+
+Infected Mosquitos  = A FUNCTION OF( Mosquito Infection Rate)
+	~	
+	~		|
+
+Mosquito Births  = A FUNCTION OF( Mosquito Population)
+	~	
+	~		|
+
+Mosquito Deaths  = A FUNCTION OF( Mosquito Population)
+	~	
+	~		|
+
+Mosquito Infection Rate  = A FUNCTION OF( Infected Humans)
+	~	
+	~		|
+
+Mosquito Population  = A FUNCTION OF( Mosquito Births,Mosquito Deaths)
+	~	
+	~		|
+
+Resource adequacy  = A FUNCTION OF( GDP per Capita,GDP Sustainable Kcap)
+	~	
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 100
+	~	Month
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Month
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Month [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	Month [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$-1--1--1,0,|12||-1--1--1|-1--1--1|-1--1--1|-1--1--1|-1--1--1|96,96,90,2
+10,1,GDP per Capita,1433,685,57,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,2,Mosquito Population,653,298,46,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,3,Mosquito Births,853,299,60,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,4,Mosquito Infection Rate,650,799,53,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,5,Infected Mosquitos,521,707,46,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,6,2,3,1,0,43,0,0,192,0,-1--1--1,,1|(741,224)|
+1,7,3,2,1,0,43,0,0,192,0,-1--1--1,,1|(764,357)|
+10,8,Mosquito Deaths,458,299,63,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,9,2,8,1,0,43,0,0,192,0,-1--1--1,,1|(553,223)|
+1,10,8,2,1,0,45,0,0,192,0,-1--1--1,,1|(560,356)|
+12,11,0,554,290,30,30,5,7,0,0,-1,0,0,0,0,0,0,0,0,0
+B1
+12,12,0,749,296,33,33,4,7,0,0,-1,0,0,0,0,0,0,0,0,0
+R1
+10,13,Effective human biting,652,472,61,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,14,2,13,0,0,43,0,0,192,0,-1--1--1,,1|(0,0)|
+10,15,Infected Humans,797,710,64,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,16,15,4,1,0,43,0,0,192,0,-1--1--1,,1|(743,782)|
+1,17,4,5,1,0,43,0,0,192,0,-1--1--1,,1|(542,772)|
+10,18,Human Infection Rate,651,634,62,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,19,5,18,1,0,43,0,0,192,0,-1--1--1,,1|(542,649)|
+1,20,18,15,1,0,43,0,0,192,0,-1--1--1,,1|(744,651)|
+10,21,Recoveries,989,573,53,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,22,15,21,1,0,43,0,0,192,0,-1--1--1,,1|(870,604)|
+1,23,21,15,1,0,45,0,0,192,0,-1--1--1,,1|(930,677)|
+10,24,Health Care Quality,1145,590,46,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,25,Economic Loss From Malaria,1086,813,55,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,26,15,25,1,0,43,0,0,192,0,-1--1--1,,1|(937,805)|
+1,27,25,1,1,0,45,0,0,192,0,-1--1--1,,1|(1291,806)|
+1,28,1,24,1,0,43,0,0,192,0,-1--1--1,,1|(1320,611)|
+10,29,Resource adequacy,1490,511,46,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,30,Fractional Growth,1672,531,66,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,31,GDP Sustainable Kcap,1483,339,62,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,32,0,654,723,33,33,4,7,0,0,-1,0,0,0,0,0,0,0,0,0
+R2
+12,33,0,1099,675,42,42,5,7,0,0,-1,0,0,0,0,0,0,0,0,0
+R3
+1,34,1,29,1,0,45,0,0,192,0,-1--1--1,,1|(1436,607)|
+1,35,31,29,0,0,43,0,0,192,0,-1--1--1,,1|(0,0)|
+1,36,29,30,1,0,43,0,0,192,0,-1--1--1,,1|(1586,507)|
+10,37,Economic Growth,1686,692,65,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,38,1,37,1,0,43,0,0,192,0,-1--1--1,,1|(1558,768)|
+1,39,30,37,1,0,43,0,0,192,0,-1--1--1,,1|(1699,600)|
+1,40,37,1,1,0,43,0,0,192,0,-1--1--1,,1|(1548,662)|
+12,41,0,1577,597,42,42,4,7,0,0,-1,0,0,0,0,0,0,0,0,0
+B2|<<NnN>>|
+12,42,0,1566,716,26,26,5,7,0,0,-1,0,0,0,0,0,0,0,0,0
+R4
+1,43,13,18,0,0,43,0,0,192,0,-1--1--1,,1|(0,0)|
+1,44,24,21,1,0,43,0,0,192,0,-1--1--1,,1|(1061,570)|
+10,45,Prevention funding,1284,513,46,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,46,Vaccine coverage,1095,490,64,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,47,Effective immunity,881,528,46,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,48,1,45,1,0,43,0,1,192,0,255-0-0,|||0-0-0,1|(1384,588)|
+1,49,45,46,0,0,43,0,1,192,0,255-0-0,|||0-0-0,1|(0,0)|
+1,50,46,47,1,0,43,0,1,192,0,255-0-0,|||0-0-0,1|(979,501)|
+1,51,47,18,1,0,45,0,1,192,0,255-0-0,|||0-0-0,1|(761,568)|
+10,52,Bed net coverage,1092,386,64,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,53,Bite protection from nets,857,412,56,26,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,54,45,52,1,0,43,0,1,192,0,255-0-255,|||0-0-0,1|(1246,424)|
+1,55,52,53,1,0,43,0,1,192,0,255-0-255,|||0-0-0,1|(969,387)|
+1,56,53,13,1,0,43,0,1,192,0,255-0-128,|||0-0-0,1|(752,432)|
+///---\\\
+:L<%^E!@
+5:Bite protection from nets
+19:90,0
+24:0
+25:0
+26:0
+23:0
+15:0,0,0,0,0,0
+27:0,
+34:0,
+42:0
+72:0
+73:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Vensim Sans|12||0-0-0|0-0-0|-1--1--1|0-0-255|192-192-192|-1--1--1
